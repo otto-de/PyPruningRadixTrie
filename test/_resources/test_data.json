@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "title": "book about animals",
+      "pages": 42,
+      "year": 2022
+    },
+    {
+      "title": "book about flowers",
+      "pages": 1563,
+      "year": 2021
+    },
+    {
+      "title": "book about plants",
+      "pages": 189,
+      "year": 2002
+    },
+    {
+      "title": "book about people",
+      "pages": 5599,
+      "year": 1991
+    },
+    {
+      "title": "book about planets",
+      "pages": 9,
+      "year": 1337
+    }
+  ]
+}
