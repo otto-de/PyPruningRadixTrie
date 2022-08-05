@@ -34,7 +34,7 @@ class CSVInputProvider(AbstractInputProvider):
 
         entries: List[Input] = []
 
-        with open(file_path, 'r') as f:
+        with self.open_file_stream(file_path) as f:
             reader = csv.reader(f, delimiter=self.seperator)
             # skip header
             next(reader)

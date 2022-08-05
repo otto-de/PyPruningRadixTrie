@@ -32,7 +32,7 @@ class JSONInputProvider(AbstractInputProvider):
 
         entries: List[Input] = []
 
-        with open(file_path, 'r') as f:
+        with self.open_file_stream(file_path) as f:
             json_data = json.load(f)
 
             for entry in json_data["data"]:
