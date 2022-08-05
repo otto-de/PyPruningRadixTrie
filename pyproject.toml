@@ -2,7 +2,7 @@
 name = "pypruningradixtrie"
 version = "1.0.0"
 description = "Radix trie for fast prefix search."
-long_description = "An optimized version of the Trie datastructure in pure Python."
+readme = "README.md"
 authors = ["tomglk"]
 
 [tool.poetry.dependencies]
