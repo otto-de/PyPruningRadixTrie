@@ -3,6 +3,8 @@ name = "pypruningradixtrie"
 version = "1.0.0"
 description = "Radix trie for fast prefix search."
 readme = "README.md"
+license = "MIT"
+repository = "https://github.com/otto-de/PyPruningRadixTrie"
 authors = ["tomglk"]
 
 [tool.poetry.dependencies]
