@@ -8,7 +8,7 @@ repository = "https://github.com/otto-de/PyPruningRadixTrie"
 authors = ["tomglk"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 
