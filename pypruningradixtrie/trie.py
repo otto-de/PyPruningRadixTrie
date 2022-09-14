@@ -6,10 +6,19 @@ from pypruningradixtrie.input.abstract_input_provider import AbstractInputProvid
 from pypruningradixtrie.trie_node import TrieNode
 
 
-def add_to_results(child_node: TrieNode, child_term: str,
-                   prefix_string: str,
-                   top_k: int,
-                   results: List[Entry]):
+def _add_to_results(child_node: TrieNode, child_term: str,
+                    prefix_string: str,
+                    top_k: int,
+                    results: List[Entry]) -> None:
+    """
+    Add a new item to the list collecting the results. Remove an element if the number of results exceeds the top_k.
+
+    :param child_node: The node which was found
+    :param child_term: The term which connects the child_node to its parent
+    :param prefix_string: The prefix gathered from all parents of the node
+    :param top_k: The number of results we want to collect
+    :param results: The currently found results
+    """
     new_result: Entry = Entry(prefix_string + child_term, child_node.get_score())
 
     results.append(new_result)
@@ -44,9 +53,20 @@ class PruningRadixTrie:
             fill_trie_from_file(self, input_file_path, input_provider)
 
     def get_num_entries(self) -> int:
+        """
+        Get the number of entries that are stored in the trie.
+        """
         return self._term_count
 
     def get_top_k_for_prefix(self, prefix: str, top_k: int) -> List[Entry]:
+        """
+        Find the highest scored top_k entries in the trie that start with the given prefix.
+
+        :param prefix: The prefix all terms should start with
+        :param top_k: The number of results to return
+
+        :return: A list of Entry objects with length in [0, top_k]
+        """
         if top_k <= 0:
             return []
 
@@ -90,7 +110,7 @@ class PruningRadixTrie:
                 if should_not_restrict_children or child_term.startswith(prefix_to_restrict_children):
 
                     if child_node.is_word_end:
-                        add_to_results(child_node, child_term, current_branch_term, top_k, results)
+                        _add_to_results(child_node, child_term, current_branch_term, top_k, results)
 
                     if child_node.has_children():
                         # no restriction of children anymore because this node starts with the

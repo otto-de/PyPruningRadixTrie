@@ -44,6 +44,11 @@ compared to a non-pruning trie.
 
 ## Usage
 
+Get from PyPI:
+```shell
+pip install pypruningradixtrie
+```
+
 **Create the PRT:**
 ```python
 # empty trie

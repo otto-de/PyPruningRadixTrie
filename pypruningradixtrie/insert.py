@@ -6,7 +6,14 @@ from pypruningradixtrie.trie import PruningRadixTrie
 from pypruningradixtrie.trie_node import TrieNode
 
 
-def fill_trie_from_file(trie: PruningRadixTrie, path: str, input_provider: AbstractInputProvider):
+def fill_trie_from_file(trie: PruningRadixTrie, path: str, input_provider: AbstractInputProvider) -> None:
+    """
+    Fill the trie with entries from a file.
+
+    :param trie: the trie to fill
+    :param path: location of the input file that should be read
+    :param input_provider: needs to match the file type of the 2nd parameter
+    """
     input: List[Input] = input_provider.read_input_data(path)
 
     def insert_term_with_defaults(term: str, score: float):
@@ -16,14 +23,32 @@ def fill_trie_from_file(trie: PruningRadixTrie, path: str, input_provider: Abstr
         insert_term_with_defaults(entry.query, entry.score)
 
 
-def update_max_scores(nodes: List[TrieNode], term_score: float):
+def __update_max_scores(nodes: List[TrieNode], term_score: float) -> None:
+    """
+    Update the max_score_children of all the nodes, if the given term_score is higher.
+
+    :param nodes: All the nodes that should be updated.
+    :param term_score: The score to maybe update the nodes' attribute with.
+    """
     for node in nodes:
         if term_score > node.max_score_children:
             node.max_score_children = term_score
 
 
 def insert_term(trie: PruningRadixTrie, term: str, term_score: float,
-                parent_node: TrieNode = None, parents: List[TrieNode] = None):
+                parent_node: TrieNode = None, parents: List[TrieNode] = None) -> None:
+    """
+    Add a single entry to the trie.
+    If the term already exist, the term_score gets added to the existing score.
+
+    :param trie: the trie to fill
+    :param term: the term to insert
+    :param term_score: the score of the new term
+    :param parent_node: Optional. The node in the trie where this term should start.
+            The term of the new node will be prefixed with the term of the parent_node.
+            Defaults to Root node.
+    :param parents: Optional. All the parent nodes from the given parent to the root node.
+    """
     if parents is None:
         parents = []
     if parent_node is None:
@@ -52,7 +77,7 @@ def insert_term(trie: PruningRadixTrie, term: str, term_score: float,
 
                     node.add_to_score(term_score)
 
-                    update_max_scores(parents, node.get_score())
+                    __update_max_scores(parents, node.get_score())
 
                 # new term is substring of existing key -> new branch
                 # existing: flower
@@ -63,7 +88,7 @@ def insert_term(trie: PruningRadixTrie, term: str, term_score: float,
                     child.children = [(key[shared_prefix_length:], node)]
 
                     child.max_score_children = max([node.get_score(), node.max_score_children])
-                    update_max_scores(parents, term_score)
+                    __update_max_scores(parents, term_score)
 
                     parent_node.replace_child(term[0:shared_prefix_length], child, index=j)
 
@@ -87,7 +112,7 @@ def insert_term(trie: PruningRadixTrie, term: str, term_score: float,
 
                     child.max_score_children = max(node.max_score_children, term_score, node.get_score())
 
-                    update_max_scores(parents, term_score)
+                    __update_max_scores(parents, term_score)
 
                     parent_node.replace_child(term[0:shared_prefix_length], child, index=j)
 
@@ -100,10 +125,15 @@ def insert_term(trie: PruningRadixTrie, term: str, term_score: float,
 
     trie._term_count += 1
 
-    update_max_scores(parents, term_score)
+    __update_max_scores(parents, term_score)
 
 
 def __calc_shared_prefix_len(term1: str, term2: str) -> int:
+    """
+    Determines the number of shared characters from the start between the given terms.
+
+    :return: An Integer in the range from 0 to n (= length of shorter term)
+    """
     len_shared: int = 0
 
     for i in range(0, min(len(term1), len(term2))):

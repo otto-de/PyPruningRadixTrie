@@ -80,6 +80,18 @@ class TestPruningRadixTrieInsert(unittest.TestCase):
 
         assert level == 1
 
+    def test_insert_term_after_parent_extends_the_term(self):
+        trie = PruningRadixTrie()
+
+        insert_term(trie, "flower", 140)
+
+        node, _ = trie._get_node_by_term("flower")
+
+        insert_term(trie, "power", 42, node)
+
+        node, level = trie._get_node_by_term("flowerpower")
+        assert level == 1
+
     def test_structure(self):
         trie = PruningRadixTrie()
 
