@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pypruningradixtrie"
-version = "1.0.3"
+version = "2.0.0"
 description = "Radix trie for fast prefix search."
 readme = "README.md"
 license = "MIT"
