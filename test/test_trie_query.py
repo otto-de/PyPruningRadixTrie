@@ -3,6 +3,7 @@ import unittest
 
 from pypruningradixtrie.entry import Entry
 from pypruningradixtrie.input.csv_input_provider import CSVInputProvider
+from pypruningradixtrie.insert import insert_term
 from pypruningradixtrie.trie import PruningRadixTrie
 from pypruningradixtrie.trie_node import TrieNode
 
@@ -103,3 +104,35 @@ class TestPruningRadixTrieQuery(unittest.TestCase):
         would_skip: bool = trie._should_skip_node_and_all_children(node, results, top_k=2)
 
         assert would_skip is False
+
+    def test_terms_with_same_score_are_returned_in_inserted_order(self):
+        trie = PruningRadixTrie()
+
+        insert_term(trie, "flower power", 10)
+        insert_term(trie, "flower power 1", 40)
+        insert_term(trie, "flower power 2", 40)
+        insert_term(trie, "flower power 3", 40)
+        insert_term(trie, "flower power 4", 40)
+
+        results = trie.get_top_k_for_prefix("flower power ", 10)
+
+        assert results == [Entry(term='flower power 1', score=40),
+                           Entry(term='flower power 2', score=40),
+                           Entry(term='flower power 3', score=40),
+                           Entry(term='flower power 4', score=40)]
+
+        # reset & change order
+        trie = PruningRadixTrie()
+
+        insert_term(trie, "flower power", 10)
+        insert_term(trie, "flower power 4", 40)
+        insert_term(trie, "flower power 3", 40)
+        insert_term(trie, "flower power 2", 40)
+        insert_term(trie, "flower power 1", 40)
+
+        results = trie.get_top_k_for_prefix("flower power ", 10)
+
+        assert results == [Entry(term='flower power 4', score=40),
+                           Entry(term='flower power 3', score=40),
+                           Entry(term='flower power 2', score=40),
+                           Entry(term='flower power 1', score=40)]
