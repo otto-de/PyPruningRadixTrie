@@ -1,6 +1,8 @@
 # PyPruningRadixTrie
 ![GitHub CI](https://github.com/otto-de/PyPruningRadixTrie/actions/workflows/pipeline.yml/badge.svg)
 [![PyPI version](https://badge.fury.io/py/pypruningradixtrie.svg)](https://badge.fury.io/py/pypruningradixtrie)
+![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fotto-de%2FPyPruningRadixTrie%2Fblob%2Fmain%2FOSSMETADATA)
+
 
 Python Port of [Pruning Radix Trie](https://github.com/wolfgarbe/PruningRadixTrie) by Wolf Garbe.
 
